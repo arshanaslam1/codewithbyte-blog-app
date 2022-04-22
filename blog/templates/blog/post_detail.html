@@ -1,0 +1,302 @@
+
+
+{% extends "main/base.html" %}
+{% load social_share %}
+{% load hitcount_tags %}
+{% load static %}
+{% block meta %}
+<title>{% if object.title|capfirst %}{{ object.title|capfirst }}{% endif %}</title>
+<meta charset="UTF-8">
+<meta name="title" content="{% if object.title %}{{ object.title }}{% endif %}">
+<meta name="description" content="{% if object.meta_description %}{{ object.meta_description }}{% else %}{{ object.description|safe|striptags|truncatewords:"20" }}{% endif %}">
+<meta name="author" content="{{ object.author }}">
+<meta name="keywords" content="{% if object.keywords %}{{ object.keywords }}{% else %}{{ object.title }}{% endif %}"/>
+{% for tag in object.tags.all %}
+<meta property="article:tag" content="{{ tag.title }}" />
+{% endfor %}
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ object.title }}"/>
+<meta property="og:description" content="{% if object.meta_description %}{{ object.meta_description }}{% else %}{{ object.description|safe|striptags|truncatewords:"20" }}{% endif %}"/>
+<meta property="og:url" content="https://{{ request.get_host }}{% url 'post_detail' slug=object.slug %}"/>
+{% if object.cover %}
+<meta property="og:image" content="https:{{ request.get_host }}/media/{{ object.cover }}"/>
+{% endif %}
+<meta property="og:site_name" content="{{ request.get_host }}" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:description" content="{% if object.meta_description %}{{ object.meta_description }}{% else %}{{ object.description|safe|striptags|truncatewords:"20" }}{% endif %}"/>
+{% if object.cover %}
+<meta name="twitter:image:src" content="https://{{ request.get_host }}/media/{{ object.cover }}"/>
+{% endif %}
+<meta name="twitter:title" content="{{ object.title }}"/>
+<meta name="twitter:domain" content="{{ request.get_host }}"/>
+<meta name="twitter:creator" content="{{ object.author }}"/>
+{% endblock meta %}
+{% block nav_about %}
+                        <div class="yb-sidebar-item">
+                      <h6 class="uk-text-bold uk-heading-line"><span>About author</span></h6>
+                      <div data-uk-grid class="uk-child-width-1-1@m uk-child-width-1-2@s uk-child-width-1-1 uk-flex-middle ">
+                        <div>
+                          <img src="{% static "assets/blog/src/img/empty.png" %}" data-src="{{ object.author.profile.avatar.url }}" data-uk-img alt="" class="uk-border-rounded" />
+                        </div>
+                        <div class="uk-margin-remove ">
+                          <div class="yb-text-small uk-margin-small-top">
+                              {{ object.author.profile.about|truncatechars:200  }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+{% endblock nav_about %}
+{% block page_body %}
+<div class="uk-container">
+   <div data-uk-grid class="uk-grid-divider">
+      {% block blog_detail %}
+      <div class="uk-width-3-4@m yb-section-padding">
+         {% if messages %}
+         {% for message in messages %}
+         <div class="uk-text-bold">
+            <p>    {{ message|safe }}</p>
+         </div>
+         {% endfor %}
+         {% endif %}
+         {% if object.title %}
+         <h1 class="yb-section-title">
+            {{ object.title|capfirst }}
+         </h1>
+         {% endif %}
+         <div class="yb-blog-item-meta uk-margin-bottom uk-text-muted">
+            <div>
+                <a href="{% url 'profile' pk=object.author.id %}">
+                <img src="{% static "assets/blog/src/img/empty.png" %}" data-src="{{ object.author.profile.get_avatar }}" width="45" height="45" data-uk-img alt="" class="uk-border-pill" />
+                <span>{{ object.author.first_name|capfirst }} {{ object.author.last_name|capfirst }}</span>
+                </a>
+            </div>
+            {% if object.created_on %}
+            <div>
+               <span>{{ object.created_on}}</span>
+            </div>
+            {% endif %}
+            {% if object.category%}
+            <div>
+               <span>{{ object.category}}</span>
+            </div>
+            {% endif %}
+            <div><span data-uk-icon="file-text"></span> Views: {% get_hit_count for object %}</div>
+
+            <div>
+                <form method='POST' action="{% url 'like_article' object.id %}">
+                    {% csrf_token %}
+                    {% if is_liked %}
+                        <input type="hidden" name= "article_id" value="{{ object.id }}">
+
+                        <button class="uk-icon-button" data-uk-icon="heart"  style="color:red;"></button>
+                    {% else %}
+                        <input type="hidden" name= "article_id" value="{{ object.id }}">
+                        <button class="uk-icon-button" data-uk-icon="heart" ></button>
+                    {% endif %}
+                    {{ object.likes.count }}
+                </form>
+            </div>
+            {% if user.is_authenticated and user == object.author %}
+            <div>
+               <a href="{% url 'author-post-delete' slug=object.slug%}">
+               <span class="uk-icon-button" data-uk-icon="trash"></span>
+               </a>
+            </div>
+            <div><a href="{% url 'author-post-update' slug=object.slug%}"><span class="uk-icon-button" data-uk-icon="pencil"></span></a></div>
+            {% endif %}
+         </div>
+         <div>
+            <img src="{% if object.cover %}{{object.cover.url}}{% endif %}" alt="" class="yb-img-featured " />
+         </div>
+         <div class="uk-position-relative">
+            <div class="yb-blog-content yb-margin-bottom-2">
+               {% if object.content  %}
+               <p>{{object.content|safe}}</p>
+               {% endif %}
+            <div>
+            </div>
+            </div>
+            <div class="yb-blog-share">
+               <div class="uk-margin-bottom uk-text-muted yb-text-small">Share</div>
+               <div>
+                  {% post_to_facebook object_or_url blank %}
+               </div>
+               <div>
+                  {% post_to_twitter object_or_url blank %}
+               </div>
+               <div>
+                  {% post_to_linkedin object_or_url blank %}
+               </div>
+               <div>
+                  {% post_to_whatsapp object_or_url blank %}
+               </div>
+               <div>
+                  <button onclick="prompt('Press Ctrl + C, then Enter to copy to clipboard',window.location.href)" class="uk-icon-button" data-uk-icon="copy"></button>
+               </div>
+            </div>
+         </div>
+         {% if comments %}
+         <div class="yb-margin-bottom-2">
+            <h3 class="uk-heading-line yb-section-title">
+               <span>{{ comments.count }} &nbsp Comments</span>
+            </h3>
+            {% for comment in comments %}
+            <ul class="uk-comment-list ">
+               <li>
+                  <article class="uk-comment uk-visible-toggle" tabindex="-1">
+                     <header class="uk-comment-header uk-position-relative">
+                        <div class="uk-grid-medium uk-flex-middle uk-grid" data-uk-grid="">
+                           <div class="uk-width-auto uk-first-column">
+                              <img class="uk-comment-avatar uk-border-circle" src="{% static "assets/blog/src/img/people/01.png" %}" width="80" height="80" alt="" />
+                           </div>
+                           <div class="uk-width-expand">
+                              <h4 class="uk-comment-title uk-margin-remove">
+                                 <a class="uk-link-reset" href="#">{{ comment.name }}</a>
+                              </h4>
+                              <p class="uk-comment-meta uk-margin-remove-top">
+                                 <a class="uk-link-reset" href="#">{{ comment.created_on }}</a>
+                              </p>
+                           </div>
+                        </div>
+                     </header>
+                     <div class="uk-comment-body">
+                        <p>
+                           {{ comment.comment }}
+                        </p>
+                     </div>
+                  </article>
+               </li>
+            </ul>
+            {% endfor %}
+         </div>
+         {% else %}
+         <div class="yb-margin-bottom-2">
+            <h3 class="uk-heading-line yb-section-title">
+               <span>There is no comment yet!</span>
+            </h3>
+         </div>
+         {% endif %}
+         {% if new_comment %}
+         <div class="yb-margin-bottom-2">
+            <h3 class="uk-heading-line yb-section-title">
+               <span> Your&nbsp comment&nbsp is&nbsp awaiting&nbsp moderation</span>
+            </h3>
+         </div>
+         {% else %}
+         <div class="yb-margin-bottom-2">
+            <h3 class="uk-heading-line yb-section-title">
+               <span>Leave a Reply</span>
+            </h3>
+            <form method="post" class="uk-form-stacked">
+               {% csrf_token %}
+               <p>{{ comment_form.non_field_errors }}</p>
+               <div class="uk-margin">
+                  <label for="i_comment" class="uk-form-label">{{comment_form.comment.label}}*</label>
+                  {{ comment_form.comment }}
+                  <p>{{ comment_form.comment.errors }}</p>
+               </div>
+               <div data-uk-grid="" class="uk-child-width-1-2 uk-grid-small uk-grid">
+                  <div class="uk-first-column">
+                     <div class="uk-margin">
+                        <label for="i_name" class="uk-form-label">{{ comment_form.name.label }}*</label>
+                        {{ comment_form.name }}
+                        <p>{{ comment_form.name.errors }}</p>
+                     </div>
+                  </div>
+                  <div>
+                     <div class="uk-margin">
+                        <label for="i_email" class="uk-form-label">{{ comment_form.email.label }}*</label>
+                        {{ comment_form.email }}
+                        <p>{{ comment_form.email.errors }}</p>
+                     </div>
+                  </div>
+               </div>
+               <div>
+                  <button name="comment_d" class="uk-button  uk-button-large  uk-button-primary yb-btn  ">
+                  <span class="uk-margin-small-right uk-margin-small-left">Post Comment</span>
+                  <span data-uk-icon="arrow-right"></span>
+                  </button>
+               </div>
+            </form>
+         </div>
+         {% endif %}
+         {% if related_objects %}
+         <div class="yb-margin-bottom-2">
+            <h3 class="uk-heading-line yb-section-title">
+               <span>Related Articles</span>
+            </h3>
+            <div data-uk-grid class="uk-grid-medium uk-child-width-1-2@s ">
+                {% for object in related_objects %}
+               <div>
+                  <a href="{% url 'post_detail' object.slug  %}">
+                     <div class="yb-blog-item uk-background-cover" data-src="{% if object.cover %}{{object.cover.url}}{% endif %}" data-uk-img>
+                        <div class="uk-overlay uk-position-cover"> </div>
+                        <div class="uk-overlay uk-position-top">
+                           <span class="uk-badge">{{ object.category}}</span>
+                        </div>
+                        <div class="uk-overlay uk-position-bottom">
+                           <h5 class="yb-blog-item-title uk-text-truncate">{{ object.title }}</h5>
+                           <div class="yb-blog-item-meta">
+                              <div>
+                                <img src="{% static "assets/blog/src/img/empty.png" %}" data-src="{{ object.author.profile.get_avatar }}" width="45" height="45" data-uk-img alt="" class="uk-border-pill" />
+                                <span>{{ object.author.first_name|capfirst }} {{ object.author.last_name|capfirst }}</span>
+                             </div>
+                              <div>
+                                 <span>{{ object.created_on}}</span>
+                              </div>
+                              <div><span data-uk-icon="file-text"></span> {% get_hit_count for object %}</div>
+                              <div>
+                                 <span data-uk-icon="comment"></span> {{ object.comments.count }}
+                              </div>
+                              <div>
+                                 <span data-uk-icon="heart"></span>  {{ object.likes.count }}
+                              </div>
+                              {% if user.is_authenticated and user == object.author %}
+                              <div>
+                                 <span class="uk-icon-button" data-uk-icon="trash"></span>
+                              </div>
+                              <div><span class="uk-icon-button" data-uk-icon="pencil"></span></div>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               {%  endfor %}
+            </div>
+         </div>
+         {% endif %}
+      </div>
+      {% endblock %}
+      {% block blog_nav %}
+      {{ block.super }}
+      {% endblock %}
+   </div>
+</div>
+{% endblock %}
+{% block related_post %}
+{% if related_objects %}
+<div class="yb-sidebar-item">
+   <h6 class="uk-text-bold uk-heading-line "><span>Related Articles</span></h6>
+   <ul class="uk-list uk-list-divider">
+      {% for object in related_objects %}
+      <li>
+         <a href="{% url 'post_detail' object.slug  %}" class="yb-text-small uk-link-reset">
+            <div class="uk-flex">
+               <div class="yb-width-1">
+                  <img src="{% if object.cover %}{{object.cover.url}}{% endif %}" class="uk-border-rounded" alt="pic">
+               </div>
+               <div class="uk-width-expand uk-margin-small-left">
+                  <div class="uk-text-bold">{{ object.title }}</div>
+                  <span class="uk-text-muted">{{ object.created_on}}</span>
+               </div>
+            </div>
+         </a>
+      </li>
+      {%  endfor %}
+   </ul>
+</div>
+{% endif %}
+{% endblock related_post%}
+

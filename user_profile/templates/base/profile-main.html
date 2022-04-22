@@ -1,0 +1,39 @@
+
+
+{% extends "base/main_post_list.html" %}
+{% load static %}
+{% block blog_nav %}
+<div class="uk-width-1-4@m yb-section-padding">
+{% if user.is_authenticated %}
+<div class="yb-sidebar-item">
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'profile-update' pk=user.id %}' class="uk-button uk-button-default yb-btn">About</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'education-create' %}' class="uk-button uk-button-default yb-btn">Education</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'experience-create' %}' class="uk-button uk-button-default yb-btn">Experience</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'certification-create' %}' class="uk-button uk-button-default yb-btn">Certification</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'awards-create' %}' class="uk-button uk-button-default yb-btn">Awards</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'skill-create' %}' class="uk-button uk-button-default yb-btn">Skills</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'knowledge-create' %}' class="uk-button uk-button-default yb-btn">Knowledge</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'language-create' %}' class="uk-button uk-button-default yb-btn">Language</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'project-create' %}' class="uk-button uk-button-default yb-btn">Portfolio</a>
+   </div>
+   {% endif %}
+</div>
+{% endblock blog_nav %}
+

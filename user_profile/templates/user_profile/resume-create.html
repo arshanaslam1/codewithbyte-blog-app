@@ -1,0 +1,134 @@
+
+
+{% extends "base/main_post_list.html" %}
+{% load static %}
+{% block blog_nav %}
+<div class="uk-width-1-4@m yb-section-padding">
+{% if user.is_authenticated %}
+<div class="yb-sidebar-item">
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'profile-update' pk=user.id %}' class="uk-button uk-button-default yb-btn">About</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'author-all-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Education</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'author-published-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Experience</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'author-pending-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Certification</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'author-draft-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Skills</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'blog' %}' class="uk-button uk-button-default yb-btn">Awards</a>
+   </div>
+   <div class="uk-text-small uk-text-center uk-margin">
+      <a href='{% url 'blog' %}' class="uk-button uk-button-default yb-btn">Portfolio</a>
+   </div>
+   {% endif %}
+</div>
+{% endblock blog_nav %}
+{% block page_heading %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>Resume</span>
+      </div>
+   </div>
+</div>
+{% endblock page_heading %}
+{% block blog_detail %}
+<div class="contact">
+   <div class="uk-container">
+      <div data-uk-grid class=" uk-grid-divider">
+         <div class=" yb-contact-left uk-width-3-3@m">
+            <div>
+               <div id="contact_form_block">
+                  <p class="uk-text-bold"></p>
+                  <div id="contact-form-alert"></div>
+                  <div class="widget widget-contact-form widget-contact-form-style2 ">
+                     <form  class="uk-form-stacked" id="" action = "" method="post" novalidate enctype="multipart/form-data">
+                        <small class="uk-text-danger err-msg" id="f_email_error">{{ form.non_felids_errors}}</small>
+                        {% csrf_token %}
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.category.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.category }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.category.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.title.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.title }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.title.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.subtitle.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.subtitle }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.subtitle.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.start.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.start }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.start.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.end.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.end }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.end.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="uk-margin">
+                              <label for="" class="uk-form-label">{{ form.summary.label }}*</label>
+                              <div class="uk-form-controls uk-inline uk-width-1-1">
+                                 {{ form.summary }}
+                              </div>
+                              <small class="uk-text-danger err-msg" id="">{{ form.summary.errors}}</small>
+                           </div>
+                        </div>
+                        <div class="uk-margin-top">
+                           <button class="uk-button uk-button-primary uk-button-large  yb-btn" type="submit" id="" >
+                           <span class="uk-margin-small-right btn-text-wrap">Save</span>
+                           </button>
+                        </div>
+                     </form>
+                     <div class="contact-form-message" style="display: none;"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock blog_detail %}
+

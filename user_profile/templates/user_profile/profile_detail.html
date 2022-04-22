@@ -1,0 +1,213 @@
+
+
+{% extends "base/main_post_list.html" %}
+{% load static %}
+{% block page_heading %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>Profile</span>
+      </div>
+   </div>
+</div>
+{% endblock page_heading %}
+{% block blog_detail %}
+<div class="contact">
+   <div class="uk-container">
+      <div data-uk-grid class=" uk-grid-divider">
+         <div class=" yb-contact-left uk-width-3-1@m">
+            <div>
+               <div id="contact_form_block">
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div class="uk-text-bold">
+                     <p>    {{ message|safe }}</p>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                  <div class="uk-container">
+                     <div data-uk-grid class="uk-grid-divider">
+                        <div class="uk-width-expand@s yb-section-padding-top">
+                           {% if user.educations.all %}
+                           <div>
+                              <h2 class="yb-section-title uk-heading-line" id="education">
+                                 <span>Education</span>
+                              </h2>
+                              <div class="yb-resume-list">
+                                 <ul class="uk-list uk-list-large uk-list-divider">
+                                    {% for obj in user.educations.all %}
+                                    <li>
+                                       <div class="yb-resume-item">
+                                          <div class="yb-resume-item-date">
+                                             <div class="yb-resume-item-date-icon"> <span data-uk-icon="calendar"></span></div>
+                                             <div class="yb-resume-item-date-text"><span>{{ obj.start }}{% if obj.end %} - {{ obj.end }}{% endif %}</span></div>
+                                          </div>
+                                          <h4 class="yb-section-title">{{ obj.title|capfirst }}</h4>
+                                          <strong>{{ obj.subtitle|capfirst }}</strong>
+                                          <div class="uk-text-small">
+                                             <p>
+                                                {{ obj.summery|capfirst }}
+                                             </p>
+                                          </div>
+                                       </div>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </div>
+                           </div>
+                           {% endif %}
+                           {% if user.experiences.all %}
+                           <div>
+                              <h2 class="yb-section-title uk-heading-line" id="experience">
+                                 <span>Experience</span>
+                              </h2>
+                              <div class="yb-resume-list">
+                                 <ul class="uk-list uk-list-large uk-list-divider">
+                                    {% for obj in user.experiences.all %}
+                                    <li>
+                                       <div class="yb-resume-item">
+                                          <div class="yb-resume-item-date">
+                                             <div class="yb-resume-item-date-icon"> <span data-uk-icon="calendar"></span></div>
+                                             <div class="yb-resume-item-date-text"><span>{{ obj.start }}{% if obj.end %} - {{ obj.end }}{% endif %}</span></div>
+                                          </div>
+                                          <h4 class="yb-section-title">{{ obj.title|capfirst }}</h4>
+                                          <strong>{{ obj.subtitle|capfirst }}</strong>
+                                          <div class="uk-text-small">
+                                             <p>
+                                                {{ obj.summery|capfirst }}
+                                             </p>
+                                          </div>
+                                       </div>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </div>
+                           </div>
+                           {% endif %}
+                           {% if user.certifications.all %}
+                           <div>
+                              <h2 class="yb-section-title uk-heading-line" id="certification">
+                                 <span>Certification</span>
+                              </h2>
+                              <div class="yb-resume-list">
+                                 <ul class="uk-list uk-list-large uk-list-divider">
+                                    {% for obj in user.certifications.all %}
+                                    <li>
+                                       <div class="yb-resume-item">
+                                          <div class="yb-resume-item-date">
+                                             <div class="yb-resume-item-date-icon"> <span data-uk-icon="calendar"></span></div>
+                                             <div class="yb-resume-item-date-text"><span>{{ obj.start }}{% if obj.end %} - {{ obj.end }}{% endif %}</span></div>
+                                          </div>
+                                          <h4 class="yb-section-title">{{ obj.title|capfirst }}</h4>
+                                          <strong>{{ obj.subtitle|capfirst }}</strong>
+                                          <div class="uk-text-small">
+                                             <p>
+                                                {{ obj.summery|capfirst }}
+                                             </p>
+                                          </div>
+                                       </div>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </div>
+                           </div>
+                           {% endif %}
+                           {% if obj_user.skills or obj_user.knowledge or obj_user.language %}
+                           <div>
+                              <h2 class="yb-section-title  uk-heading-line " id="skills">
+                                 <span>Skills</span>
+                              </h2>
+                              <div class="yb-margin-top-1 yb-margin-bottom-2">
+                                 {% if obj_user.skills.all %}
+                                 <div class="uk-grid-collapse  uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-text-center" data-uk-grid>
+                                    {% for skill in obj_user.skills.all %}
+                                    <div class="yb-bg-soft">
+                                       <div class="yb-box-circle">
+                                          <div class="circle-progress " data-value="{{ skill.percentage|div:100 }}">
+                                             <strong>{{ skill.percentage }}<i>%</i></strong>
+                                          </div>
+                                          <h5 class="yb-box-circle-title">{{ skill.title }}</h5>
+                                       </div>
+                                    </div>
+                                    {% endfor %}
+                                 </div>
+                                 {% endif %}
+                                 <div data-uk-grid class="uk-child-width-1-2">
+                                    {% if obj_user.knowledge.all %}
+                                    <div>
+                                       <h4 class="yb-section-title">Knowledge</h4>
+                                       <ul class="uk-list uk-list-large  uk-list-divider">
+                                          {% for obj in obj_user.knowledge.all %}
+                                          <li>
+                                             <div class="yb-resume-skill-item">
+                                                <h5>
+                                                   {{ obj.title }} <small class="uk-float-right uk-text-bold uk-visible@s">{{ obj.percentage }}%</small>
+                                                </h5>
+                                                <progress class="uk-progress" value="{{ obj.percentage }}" max="100"></progress>
+                                             </div>
+                                          </li>
+                                          {% endfor %}
+                                       </ul>
+                                    </div>
+                                    {% endif %}
+                                    {% if obj_user.language.all %}
+                                    <div>
+                                       <h4 class="yb-section-title">Language </h4>
+                                       <ul class="uk-list uk-list-large uk-list-divider">
+                                          {% for obj in obj_user.language.all %}
+                                          <li>
+                                             <div class="yb-resume-skill-item">
+                                                <h5>
+                                                   {{ obj.title }} <small class="uk-float-right uk-text-bold uk-visible@s">{{ obj.percentage }}%</small>
+                                                </h5>
+                                                <progress class="uk-progress" value="{{ obj.percentage }}" max="100"></progress>
+                                             </div>
+                                          </li>
+                                          {% endfor %}
+                                       </ul>
+                                    </div>
+                                    {% endif %}
+                                 </div>
+                              </div>
+                           </div>
+                           {% endif %}
+                           {% if user.awards.all %}
+                           <div>
+                              <h2 class="yb-section-title uk-heading-line" id="awwwards">
+                                 <span>Awards</span>
+                              </h2>
+                              <div class="yb-resume-list">
+                                 <ul class="uk-list uk-list-large uk-list-divider">
+                                    {% for obj in user.awards.all %}
+                                    <li>
+                                       <div class="yb-resume-item">
+                                          <div class="yb-resume-item-date">
+                                             <div class="yb-resume-item-date-icon"> <span data-uk-icon="calendar"></span></div>
+                                             <div class="yb-resume-item-date-text"><span>{{ obj.start }}{% if obj.end %} - {{ obj.end }}{% endif %}</span></div>
+                                          </div>
+                                          <h4 class="yb-section-title">{{ obj.title|capfirst }}</h4>
+                                          <strong>{{ obj.subtitle|capfirst }}</strong>
+                                          <div class="uk-text-small">
+                                             <p>
+                                                {{ obj.summery|capfirst }}
+                                             </p>
+                                          </div>
+                                       </div>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </div>
+                           </div>
+                           {% endif %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+{% endblock blog_detail %}
+

@@ -1,0 +1,259 @@
+
+
+{% extends "base/profile-main.html" %}
+{% load static %}
+{% block page_heading %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>Profile Update</span>
+      </div>
+   </div>
+</div>
+{% endblock page_heading %}
+{% block blog_detail %}
+<div class="contact">
+   <div class="uk-container">
+      <div data-uk-grid class=" uk-grid-divider">
+         <div class=" yb-contact-left uk-width-3-3@m">
+            <div>
+               <div id="contact_form_block">
+                  <p class="uk-text-bold"></p>
+                  <div id="contact-form-alert"></div>
+                  <div class="widget widget-contact-form widget-contact-form-style2 ">
+                     <form  class="uk-form-stacked" id="" action = "" method="post" novalidate enctype="multipart/form-data">
+                        <small class="uk-text-danger err-msg" id="f_email_error">{{ account_form.non_felids_errors}}</small>
+                        {% csrf_token %}
+                        <div class="uk-margin ">
+                           <label for="" class="uk-form-label">{{ form.about.label }}*</label>
+                           <div class="uk-form-controls">
+                              {{ form.about }}
+                           </div>
+                           <small class="uk-text-danger err-msg" id="">
+                           {{ form.about.errors }}
+                           </small>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                        </div>
+                        <div class="uk-margin ">
+                           <label for="" class="uk-form-label">{{ form.avatar.label }}*</label>
+                           <div class="uk-form-controls">
+                              {{ form.avatar }}
+                           </div>
+                           <small class="uk-text-danger err-msg" id="">
+                           {{ form.avatar.errors}}
+                           </small>
+                        </div>
+                        <div class="uk-margin">
+                           <label class="uk-form-label">{{ form.gender.label }}*</label>
+                           <div class="uk-form-controls uk-grid-small uk-child-width-auto uk-grid" >
+                              {% for choice in form.gender %}
+                              <label>
+                              {{ choice.tag }}
+                              {{ choice.choice_label }}
+                              </label>
+                              {% endfor %}
+                           </div>
+                           <small class="uk-text-danger err-msg" id="">
+                           {{ form.gender.errors }}
+                           </small>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.phone.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.phone }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.phone.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.country.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.country }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.country.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.address.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.address }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.address.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.city.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.city }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.city.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.zip.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.zip }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.zip.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.state.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.state }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.state.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.introvideo.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.introvideo }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.introvideo.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.website.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.website }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.website.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-margin ">
+                           <label for="" class="uk-form-label">{{ form.thumbnail.label }}*</label>
+                           <div class="uk-form-controls">
+                              {{ form.thumbnail }}
+                           </div>
+                           <small class="uk-text-danger err-msg" id="">
+                           {{ form.thumbnail.errors}}
+                           </small>
+                        </div>
+                        <div class="uk-margin ">
+                           <label for="" class="uk-form-label">{{ form.cv.label }}*</label>
+                           <div class="uk-form-controls">
+                              {{ form.cv }}
+                           </div>
+                           <small class="uk-text-danger err-msg" id="">
+                           {{ form.cv.errors}}
+                           </small>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.facebook.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.facebook }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.facebook.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.instagram.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.instagram }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.instagram.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.twitter.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.twitter }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.twitter.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.linkedin.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.linkedin }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.linkedin.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.github.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.github }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.github.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.youtube.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.youtube }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.youtube.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.whatsapp.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.whatsapp }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.whatsapp.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-margin-top">
+                           <button class="uk-button uk-button-primary uk-button-large  yb-btn" type="submit" id="" >
+                           <span class="uk-margin-small-right btn-text-wrap">Save</span>
+                           </button>
+                        </div>
+                     </form>
+                     <div class="contact-form-message" style="display: none;"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock blog_detail %}
+

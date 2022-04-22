@@ -1,0 +1,55 @@
+
+
+{% extends "base/main_post_list.html" %}
+{% load hitcount_tags %}
+{% block page_title %}
+<h2 class="yb-section-title uk-heading-line"><span>Posts under search: {{ query }} </span></h2>
+{% endblock page_title %}
+{% block paginated %}
+{% if is_paginated %}
+{% if request.GET.query %}
+<div class="uk-margin-bottom uk-margin-large-top">
+   <ul class="yb-paggination uk-pagination uk-flex-center">
+      {% if page_obj.has_previous %}
+      <li>
+         <a href="?query={{ query }}&amp;page=1"><span data-uk-icon='chevron-double-left'></span></a>
+      </li>
+      <li>
+         <a href="?query={{ query }}&amp;page={{ page_obj.previous_page_number }}"><span data-uk-pagination-previous ></span></a>
+      </li>
+      {% else %}
+      <li class="uk-disabled">
+         <a href="#"><span data-uk-icon='chevron-double-left'></span></a>
+      </li>
+      <li class="uk-disabled">
+         <a href="#"><span data-uk-pagination-previous></span></a>
+      </li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+      <li class="uk-active"><a href="?page{{ num }}">{{ num }}</a></li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'-3' %}
+      <li><a href="?query={{ query }}&amp;page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li>
+         <a href="?query={{ query }}&amp;page={{ page_obj.next_page_number }}"><span data-uk-pagination-next></span></a>
+      </li>
+      <li>
+         <a href="?query={{ query }}&amp;page={{ page_obj.paginator.num_pages }}"><span data-uk-icon='chevron-double-right'>  </span></a>
+      </li>
+      {% else %}
+      <li class="uk-disabled">
+         <a href="#"><span data-uk-pagination-next></span></a>
+      </li>
+      <li class="uk-disabled">
+         <a href="#"><span data-uk-icon='chevron-double-right'> </span></a>
+      </li>
+      {% endif %}
+   </ul>
+</div>
+{% endif %}
+{% endif %}
+{% endblock paginated %}
+

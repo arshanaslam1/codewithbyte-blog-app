@@ -1,0 +1,38 @@
+
+
+{% extends "main/base.html" %}
+{% block section %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>Logout</span>
+      </div>
+   </div>
+</div>
+<div class="uk-section uk-flex uk-flex-middle uk-animation-fade " >
+   <div class="uk-width-1-1">
+      <div class="uk-container ">
+         <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+            <div class="uk-width-1-1@m">
+               <div class="uk-margin uk-width-large uk-margin-auto uk-card  uk-card-body uk-box-shadow-large uk-border-rounded ">
+                  <div class="uk-text-small uk-text-center">
+                     <h5>Your are Loged out successful.</h5>
+                  </div>
+                  <hr>
+                  <div class="uk-text-small uk-text-center uk-margin">
+                     <a class="uk-button uk-button-primary uk-border-rounded yb-btn" href="{% url 'login' %}">Login</a>
+                  </div>
+                  <div class="uk-text-small uk-text-center uk-margin">
+                     OR
+                  </div>
+                  <div class="uk-text-small uk-text-center">
+                     <a href="{% url 'blog' %}">Back to home page!</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock section %}
+

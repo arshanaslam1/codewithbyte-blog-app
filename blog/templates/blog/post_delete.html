@@ -1,0 +1,53 @@
+
+
+{% extends "base/main_post_list.html" %}
+{% load static %}
+{% block blog_detail %}
+<div class="contact">
+   <div class="uk-container">
+      <div data-uk-grid class=" uk-grid-divider">
+         <div class=" yb-contact-left uk-width-3-4@m">
+            <div>
+               <div id="contact_form_block">
+                  <p class="uk-text-bold"></p>
+                  <div id="contact-form-alert"></div>
+                  <div class="widget widget-contact-form widget-contact-form-style2 ">
+                     <form  class="uk-form-stacked" id="" action = "" method="post"  >
+                        {% csrf_token %}
+                        <div class="uk-section uk-flex uk-flex-middle uk-animation-fade " >
+                           <div class="uk-width-1-1">
+                              <div class="uk-container ">
+                                 <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+                                    <div class="uk-width-1-1@m">
+                                       <div class="uk-margin uk-width-large uk-margin-auto uk-card  uk-card-body uk-box-shadow-large uk-border-rounded ">
+                                          <div class="uk-text-small uk-text-center">
+                                             <h5>Are you sure you want to delete this post?</h5>
+                                          </div>
+                                          <hr>
+                                          <div class="uk-text-small uk-text-center uk-margin">
+                                             <button class="uk-button uk-button-primary uk-border-rounded yb-btn" type="submit" id=""  data-textreset="">
+                                             <span class="uk-margin-small-right btn-text-wrap">Delete</span>
+                                             </button>
+                                          </div>
+                                          <div class="uk-text-small uk-text-center uk-margin">
+                                             OR
+                                          </div>
+                                          <div class="uk-text-small uk-text-center">
+                                             <a href="{% url 'blog' %}">Cancel</a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+                     <div class="contact-form-message" style="display: none;"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock blog_detail %}

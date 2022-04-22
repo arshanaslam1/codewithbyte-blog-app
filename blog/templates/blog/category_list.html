@@ -1,0 +1,29 @@
+{% extends "base/main_post_list.html" %}
+{% load hitcount_tags %}
+      {% block page_title %}
+                <h2 class="yb-section-title uk-heading-line"><span>Categories</span></h2>
+      {% endblock page_title %}
+
+ {% block post_list %}
+            <div data-uk-grid class="uk-grid-medium uk-child-width-1-2@s uk-margin-medium-top">
+              {% if object %}
+              {% for cat in object %}
+              <div>
+                <a href="{% url 'category_post_list' cat.slug  %}">
+                  <div class="yb-blog-item uk-background-cover" data-src="{% if cat.cover %}{{ cat.cover.url }}{% endif %}" data-uk-img>
+                    <div class="uk-overlay uk-position-cover"> </div>
+                    <div class="uk-overlay uk-position-bottom">
+                      <h5 class="yb-blog-item-title uk-text-truncate">{{ cat.title|capfirst }}</h5>
+                      <div class="yb-blog-item-meta">
+
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+              {% else %}
+                  <p>There is not category yet!</p>
+              {% endif %}
+            </div>
+ {% endblock post_list %}

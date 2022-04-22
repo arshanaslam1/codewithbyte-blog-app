@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+{% block section %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>Login</span>
+      </div>
+   </div>
+</div>
+<div class="uk-section uk-flex uk-flex-middle uk-animation-fade " >
+   <div class="uk-width-1-1">
+      <div class="uk-container ">
+         <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+            <div class="uk-width-1-1@m">
+               <div class="uk-margin uk-width-large uk-margin-auto uk-card  uk-card-body uk-box-shadow-large uk-border-rounded ">
+                  <h3 class="uk-card-title uk-text-center">Welcome Back!</h3>
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div class="uk-text-bold">
+                     <p>    {{ message|safe }}</p>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                  <form method="POST" novalidate action="" >
+                     {% csrf_token %}
+                     {{ form.non_field_errors }}
+                     <div class="uk-margin">
+                        <div class="uk-inline uk-width-1-1">
+                           <span class="uk-form-icon" uk-icon="icon: user"></span>
+                           {{ form.username}}
+                        </div>
+                        <small class="uk-text-danger err-msg">
+                        {{ form.username.errors }}
+                        </small>
+                     </div>
+                     <div class="uk-margin">
+                        <div class="uk-inline uk-width-1-1">
+                           <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                           {{ form.password}}
+                        </div>
+                        <small class="uk-text-danger err-msg">
+                        {{ form.password.errors }}
+                        </small>
+                     </div>
+                     <div class="uk-margin">
+                        <button class="uk-button uk-button-primary uk-button-large uk-width-1-1 yb-btn2 uk-border-rounded">Login</button>
+                     </div>
+                     <hr>
+                     <div class="uk-text-small uk-text-center">
+                        <a href="{% url 'password_reset' %}">Forget password?</a>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock section %}
+

@@ -1,0 +1,982 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load hitcount_tags %}
+{% load mathfilters %}
+{% block meta %}
+    <title>
+        {{ object.user.first_name|capfirst }} {{ object.user.last_name|capfirst }}
+    </title>
+    <meta name="title" content="{{ object.user.first_name|capfirst }} {{ object.user.last_name|capfirst }}">
+    <meta name="description"
+          content="{{ object.about|truncatechars:250 }}">
+    <meta property="og:title" content="{{ object.user.first_name|capfirst }} {{ object.user.last_name|capfirst }}">
+    <meta property="og:description"
+          content="{{ object.about|truncatechars:250 }}">
+    <meta property="og:image" content="{% if object.thumbnail %} {{ object.thumbnail.url }} {% endif %}">
+    <meta property="og:image:width" content="433">
+    <meta property="og:image:height" content="433">
+    <meta property="og:type" content="website">
+    <meta property="twitter:title" content="{{ object.user.first_name|capfirst }} {{ object.user.last_name|capfirst }}">
+    <meta property="twitter:description"
+          content="{{ object.about|truncatechars:250 }}">
+    <meta property="twitter:image" content="{% if object.thumbnail %} {{ object.thumbnail.url }} {% endif %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:width" content="433"/>
+    <meta name="twitter:image:height" content="433"/>
+    <meta property="twitter:type" content="website">
+    <meta name="og:url" content="{{ request.build_absolute_uri }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+{% endblock meta %}
+{% block nav_center %}
+    <div class="yb-menu-toggle-wrapper" id="menucollapse">
+    <div class="uk-navbar-center">
+        <ul class="uk-navbar-nav" data-uk-scrollspy-nav="closest: li; scroll: false; offset: 79 ">
+            <li>
+                <a class="yb-inner-link" href="#home"> Home </a>
+            </li>
+            <li>
+                <a class="yb-inner-link" href="#about"> About</a>
+            </li>
+            {% if awards.all  or skills.all  or experiences.all  or educations.all  or skills.all or knowledge.all or language.all or user == obj_user %}
+                <li>
+                    <a class="yb-inner-link" href="#resume"> Resume </a>
+                </li>
+            {% endif %}
+            {% if obj_user.project.all or user == obj_user %}
+                <li>
+                    <a class="yb-inner-link" href="#portfolio"> Portfolio </a>
+                </li>
+            {% endif %}
+            <li>
+                <a class="yb-inner-link" href="#articles"> Articles </a>
+            </li>
+            <li>
+                <a class="yb-inner-link" href="#contact"> Contact </a>
+            </li>
+        </ul>
+    </div>
+{% endblock nav_center %}
+{% block nav_right %}
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav yb-social-icons">
+            {% if object.facebook %}
+                <li>
+                    <a href="{{ object.facebook }}">
+                        <span class="uk-icon " data-uk-icon="icon: facebook"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.instagram %}
+                <li>
+                    <a href="{{ object.instagram }}">
+                        <span class="uk-icon" data-uk-icon="icon: instagram"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.facebook %}
+                <li>
+                    <a href="{{ object.twitter }}">
+                        <span class="uk-icon" data-uk-icon="icon: twitter"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.linkedin %}
+                <li>
+                    <a href="{{ object.linkedin }}">
+                        <span class="uk-icon" data-uk-icon="icon: linkedin"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.github %}
+                <li>
+                    <a href="{{ object.github }}">
+                        <span class="uk-icon" data-uk-icon="icon: github"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.youtube %}
+                <li>
+                    <a href="{{ object.youtube }}">
+                        <span class="uk-icon" data-uk-icon="icon: youtube"></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if object.whatsapp %}
+                <li>
+                    <a href="{{ object.whatsapp }}">
+                        <span class="uk-icon" data-uk-icon="icon: whatsapp"></span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock nav_right %}
+{% block resume %}
+    <!-- home section -->
+    <div class="yb-full-height " id="home">
+        <section class="yb-profile-desc">
+            <div class="yb-section-point-wrapper" data-uk-parallax="opacity: 1, 0;">
+                <div class="uk-container">
+                    <div class="yb-section-point">
+                        <sup>01</sup>
+                        <span>welcome</span>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-position-top-center">
+                <div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="uk-text-bold">
+                                <p>    {{ message|safe }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="yb-graphics">
+                <div class="yb-graphic-1" data-uk-parallax="blur: 0,30;"></div>
+                <div class="yb-graphic-2" data-uk-parallax="blur: 0,30;"></div>
+            </div>
+            <div class="uk-container uk-text-center yb-profile-desc-wrap uk-position-relative">
+                <img src="{% static "assets/blog/src/img/x1.png" %}" alt="" width="60"/>
+                <h1 class="uk-text-bold yb-gradient-text"><span> {{ object.user.first_name|capfirst }} </span>
+                    <span>{{ object.user.last_name|capfirst }}</span>
+                </h1>
+            </div>
+        </section>
+    </div>
+    <!-- end home section -->
+{% endblock resume %}
+{% block main %}
+    <!-- main section -->
+    <main class="yb-main-content">
+        <!-- about section -->
+        <section id="about" class="yb-section">
+            <div class="yb-my-profile">
+                <div class="uk-container">
+                    <div class="uk-grid-collapse uk-child-width-expand@m" data-uk-grid>
+                        <div>
+                            <div class="yb-my-profile-img uk-background-cover uk-background-norepeat uk-background-top-center"
+                                    {% if object.thumbnail %} data-src="{{ object.thumbnail.url }}" {% endif %}
+                                 data-uk-img data-uk-lightbox>
+                                {% if object.introvideo %}
+                                    <a href="{{ object.introvideo }}" class="yb-my-intro">
+                                        <span data-uk-icon="icon: play; ratio: 2"></span>
+                                        <span class="yb-my-intro-text">Introduction</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="yb-my-profile-desc">
+                                <div class="yb-section-point-wrapper">
+                                    <div class="yb-section-point right">
+                                        <sup>02</sup>
+                                        <span>About</span>
+                                        {% if user == obj_user %}
+                                            <a href="{% url 'profile-update' pk=user.id %}"
+                                               class="uk-icon-button uk-margin-small-right" uk-icon="pencil"></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if object.about %}
+                                    <div class="yb-my-profile-desc-top">
+                                        <h2 class="yb-section-title">Hello There!</h2>
+                                        <p>{{ object.about }}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                                <div class="yb-my-profile-desc-bottom yb-bg-soft">
+                                    <ul class="yb-my-profile-desc-info uk-list">
+                                        {% if object.phone %}
+                                            <li>
+                                                <span>Phone</span>:<a
+                                                    href="tel:{{ object.phone }}">  {{ object.phone }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if object.user.email %}
+                                            <li>
+                                                <span>Email</span> :<a
+                                                    href="{{ object.user.email }}"> {{ object.user.email }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if object.website %}
+                                            <li>
+                                                <span>Website</span> :<a
+                                                    href="{{ object.website }}"> {{ object.website }}</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+               <div class="yb-border-top yb-border-bottom ">
+                  <div class="uk-container">
+                     <div data-uk-grid class="yb-box-services uk-child-width-1-4@l uk-child-width-1-2 uk-text-center uk-grid-divider">
+                        <div>
+                           <div class="yb-box-service">
+                              <span class="uk-icon" data-uk-icon="icon: laptop; ratio: 1.5"></span>
+                              <h5>Web & Cloud Developer</h5>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="yb-box-service">
+                              <span class="uk-icon" data-uk-icon="icon: code; ratio: 1.5"></span>
+                              <h5>Python Programmer</h5>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="yb-box-service">
+                              <span class="uk-icon" data-uk-icon="icon: desktop; ratio: 1.5"></span>
+                              <h5>Djnago Developer</h5>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="yb-box-service">
+                              <span class="uk-icon" data-uk-icon="icon: settings; ratio: 1.5"></span>
+                              <h5>IT Expert</h5>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div> -->
+        </section>
+        <!--  end about section -->
+        <!-- resume section -->
+        {% if awards.all or experience.all  or education.all  or skills.all or knowledge.all or language.all or user == obj_user %}
+            <section class="yb-section " id="resume">
+                <div class="yb-section-point-wrapper">
+                    <div class="uk-container">
+                        <div class="yb-section-point">
+                            <sup>03</sup>
+                            <span>Resume</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-container">
+                    <div data-uk-grid class="uk-grid-divider">
+                        <div class="uk-width-1-4@s uk-visible@s uk-margin-large-bottom yb-section-padding-top "
+                             id="resume-nav-wrapper">
+                            <div data-uk-sticky="bottom: #resume-nav-wrapper; offset: 100; media: 650">
+                                <ul class="yb-nav-left uk-tab-left uk-tab"
+                                    data-uk-scrollspy-nav="closest: li; scroll: false; offset: 120">
+                                    {% if education.all  or user == obj_user %}
+                                        <li class="uk-active">
+                                            <a href="#education" class="yb-inner-link" data-offset="120">
+                                                <span data-uk-icon="minus"></span>
+                                                Education
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if experience.all or user == obj_user %}
+                                        <li>
+                                            <a href="#experience" class="yb-inner-link" data-offset="120">
+                                                <span data-uk-icon="minus"></span>
+                                                Experience
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if certification.all  or user == obj_user %}
+                                        </li>
+                                        <li>
+                                            <a href="#certification" class="yb-inner-link" data-offset="120">
+                                                <span data-uk-icon="minus"></span>
+                                                Certification
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if skills.all or  language.all or knowledge.all or user == obj_user %}
+                                        <li>
+                                            <a href="#skills" class="yb-inner-link" data-offset="120">
+                                                <span data-uk-icon="minus"></span>
+                                                Skills
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if awards.all or user == obj_user %}
+                                        <li>
+                                            <a href="#awwwards" class="yb-inner-link" data-offset="120">
+                                                <span data-uk-icon="minus"></span>
+                                                Awards
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uk-width-expand@s yb-section-padding-top">
+                            {% if  education.all or user == obj_user %}
+                                <div>
+                                    <h2 class="yb-section-title uk-heading-line" id="education">
+                                        <div>
+<span>Education
+    {% if user == obj_user %}
+        <a href="{% url 'education-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                        </div>
+                                    </h2>
+                                    <div class="yb-resume-list">
+                                        <ul class="uk-list uk-list-large uk-list-divider">
+                                            {% for obj in education.all %}
+                                                <li>
+                                                    <div class="yb-resume-item">
+                                                        <div class="yb-resume-item-date">
+                                                            <div class="yb-resume-item-date-icon"><span
+                                                                    data-uk-icon="calendar"></span></div>
+                                                            <div class="yb-resume-item-date-text">
+<span>{{ obj.issueDate }}{% if obj.expirationDate %} -
+    {{ obj.expirationDate }}{% endif %}</span></div>
+                                                        </div>
+                                                        <h4 class="yb-section-title">{{ obj.name|capfirst }} &nbsp;
+                                                            {% if user == obj_user %}
+                                                                <a href="{% url 'education-delete' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="trash"></a>
+                                                                <a href="{% url 'education-update' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="pencil"></a>
+                                                            {% endif %}
+                                                        </h4>
+                                                        <strong>{{ obj.organization|capfirst }}</strong>
+                                                        <div class="uk-text-small">
+                                                            <p>
+                                                                {{ obj.description|capfirst }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if experience.all or user == obj_user %}
+                                <div>
+                                    <h2 class="yb-section-title uk-heading-line" id="experience">
+<span>Experience
+    {% if user == obj_user %}
+        <a href="{% url 'experience-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                    </h2>
+                                    <div class="yb-resume-list">
+                                        <ul class="uk-list uk-list-large uk-list-divider">
+                                            {% for obj in experience.all %}
+                                                <li>
+                                                    <div class="yb-resume-item">
+                                                        <div class="yb-resume-item-date">
+                                                            <div class="yb-resume-item-date-icon"><span
+                                                                    data-uk-icon="calendar"></span></div>
+                                                            <div class="yb-resume-item-date-text">
+<span>{{ obj.issueDate }}{% if obj.expirationDate %} -
+    {{ obj.expirationDate }}{% endif %}</span></div>
+                                                        </div>
+                                                        <h4 class="yb-section-title">{{ obj.name|capfirst }}&nbsp;
+                                                            {% if user == obj_user %}
+                                                                <a href="{% url 'experience-delete' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="trash"></a>
+                                                                <a href="{% url 'experience-update' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="pencil"></a>
+                                                            {% endif %}
+                                                        </h4>
+                                                        <strong>{{ obj.organization|capfirst }}</strong>
+                                                        <div class="uk-text-small">
+                                                            <p>
+                                                                {{ obj.description|capfirst }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if certification.all or user == obj_user %}
+                                <div>
+                                    <h2 class="yb-section-title uk-heading-line" id="certification">
+<span>Certification
+    {% if user == obj_user %}
+        <a href="{% url 'certification-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                    </h2>
+                                    <div class="yb-resume-list">
+                                        <ul class="uk-list uk-list-large uk-list-divider">
+                                            {% for obj in certification.all %}
+                                                <li>
+                                                    <div class="yb-resume-item">
+                                                        <div class="yb-resume-item-date">
+                                                            <div class="yb-resume-item-date-icon"><span
+                                                                    data-uk-icon="calendar"></span></div>
+                                                            <div class="yb-resume-item-date-text">
+<span>{{ obj.issueDate }}{% if obj.expirationDate %} -
+    {{ obj.expirationDate }}{% endif %}</span></div>
+                                                        </div>
+                                                        <h4 class="yb-section-title">{{ obj.name|capfirst }}&nbsp;
+                                                            {% if user == obj_user %}
+                                                                <a href="{% url 'experience-delete' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="trash"></a>
+                                                                <a href="{% url 'certification-update' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="pencil"></a>
+                                                            {% endif %}
+                                                        </h4>
+                                                        <strong>{{ obj.organization|capfirst }}</strong>
+                                                        <div class="uk-text-small">
+                                                            <p>
+                                                                {{ obj.description|capfirst }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if skills.all or knowledge.all or language.all or user == obj_user %}
+                                <div>
+                                    <h2 class="yb-section-title  uk-heading-line " id="skills">
+<span>Skills
+    {% if user == obj_user %}
+        <a href="{% url 'skill-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                    </h2>
+                                    <div class="yb-margin-top-1 yb-margin-bottom-2">
+                                        {% if skills.all or user == obj_user %}
+                                            <div class="uk-grid-collapse  uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-text-center"
+                                                 data-uk-grid>
+                                                {% for skill in skills.all %}
+                                                    <div class="yb-bg-soft">
+                                                        <div class="yb-box-circle">
+                                                            <div class="circle-progress "
+                                                                 data-value="{{ skill.percentage|div:100 }}">
+                                                                <strong>{{ skill.percentage }}<i>%</i></strong>
+                                                            </div>
+                                                            <h5 class="yb-box-circle-title">{{ skill.title }}
+                                                                &nbsp;
+                                                                {% if user == obj_user %}
+                                                                    <a href="{% url 'skill-delete' pk=skill.id %}"
+                                                                       class="uk-icon-button uk-margin-small-right"
+                                                                       uk-icon="trash"></a>
+                                                                {% endif %}
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div data-uk-grid class="uk-child-width-1-2">
+                                            {% if knowledge.all or user == obj_user %}
+                                                <div>
+                                                    <h4 class="yb-section-title">Knowledge&nbsp;
+                                                        {% if user == obj_user %}
+                                                            <a href="{% url 'knowledge-create' %}"
+                                                               class="uk-icon-button uk-margin-small-right"
+                                                               uk-icon="plus-circle"></a>
+                                                        {% endif %}
+                                                    </h4>
+                                                    <ul class="uk-list uk-list-large  uk-list-divider">
+                                                        {% for obj in knowledge.all %}
+                                                            <li>
+                                                                <div class="yb-resume-skill-item">
+                                                                    <h5>{{ obj.title }}
+                                                                        &nbsp;
+                                                                        {% if user == obj_user %}
+                                                                            <a href="{% url 'knowledge-delete' pk=obj.id %}"
+                                                                               class="uk-icon-button uk-margin-small-right"
+                                                                               uk-icon="trash"></a>
+                                                                        {% endif %}
+                                                                        <small class="uk-float-right uk-text-bold uk-visible@s">{{ obj.percentage }}%</small>
+                                                                    </h5>
+                                                                    <progress class="uk-progress"
+                                                                              value="{{ obj.percentage }}"
+                                                                              max="100"></progress>
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                            {% if language.all or user == obj_user %}
+                                                <div>
+                                                    <h4 class="yb-section-title">Language&nbsp;
+                                                        {% if user == obj_user %}
+                                                            <a href="{% url 'language-create' %}"
+                                                               class="uk-icon-button uk-margin-small-right"
+                                                               uk-icon="plus-circle"></a>
+                                                        {% endif %}
+                                                    </h4>
+                                                    <ul class="uk-list uk-list-large uk-list-divider">
+                                                        {% for obj in language.all %}
+                                                            <li>
+                                                                <div class="yb-resume-skill-item">
+                                                                    <h5>{{ obj.title }}
+                                                                        &nbsp;
+                                                                        {% if user == obj_user %}
+                                                                            <a href="{% url 'language-delete' pk=obj.id %}"
+                                                                               class="uk-icon-button uk-margin-small-right"
+                                                                               uk-icon="trash"></a>
+                                                                        {% endif %}
+                                                                        <small class="uk-float-right uk-text-bold uk-visible@s">{{ obj.percentage }}%</small>
+                                                                    </h5>
+                                                                    <progress class="uk-progress"
+                                                                              value="{{ obj.percentage }}"
+                                                                              max="100"></progress>
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if awards.all or user == obj_user %}
+                                <div>
+                                    <h2 class="yb-section-title uk-heading-line" id="awwwards">
+<span>Awards
+    {% if user == obj_user %}
+        <a href="{% url 'awards-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                    </h2>
+                                    <div class="yb-resume-list">
+                                        <ul class="uk-list uk-list-large uk-list-divider">
+                                            {% for obj in awards.all %}
+                                                <li>
+                                                    <div class="yb-resume-item">
+                                                        <div class="yb-resume-item-date">
+                                                            <div class="yb-resume-item-date-icon"><span
+                                                                    data-uk-icon="calendar"></span></div>
+                                                            <div class="yb-resume-item-date-text">
+<span>{{ obj.issueDate }}{% if obj.expirationDate %} -
+    {{ obj.expirationDate }}{% endif %}</span></div>
+                                                        </div>
+                                                        <h4 class="yb-section-title">{{ obj.name|capfirst }}&nbsp;
+                                                            {% if user == obj_user %}
+                                                                <a href="{% url 'awards-delete' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="trash"></a>
+                                                                <a href="{% url 'awards-update' pk=obj.id %}"
+                                                                   class="uk-icon-button uk-margin-small-right"
+                                                                   uk-icon="pencil"></a>
+                                                            {% endif %}
+                                                        </h4>
+                                                        <strong>{{ obj.organization|capfirst }}</strong>
+                                                        <div class="uk-text-small">
+                                                            <p>
+                                                                {{ obj.description|capfirst }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="yb-section yb-section-padding uk-background-cover uk-background-fixed "
+                         data-uk-parallax="bgy: -200" data-src="{% static "assets/blog/src/img/bg/bg2.jpg" %}"
+                         data-uk-img>
+                        <div class="yb-overlay-primary uk-position-cover"></div>
+                        <div class="uk-container uk-text-center uk-position-relative">
+                            <div data-uk-grid class="uk-grid-small  uk-flex-center">
+                                {% if object.cv %}
+                                    <div>
+                                        <a href="{{ object.cv }}"
+                                           class=" yb-btn uk-button uk-button-primary uk-button-large">Download CV</a>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <a href="#contact"
+                                       class="yb-inner-link yb-btn uk-button uk-button-danger  uk-button-large">Hire
+                                        Me</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        <!-- end resume section -->
+        <!-- portfolio section -->
+        {% if obj_user.project.all or user == obj_user %}
+            <section class="yb-section  uk-overflow-hidden" id="portfolio">
+                <div class="yb-section-point-wrapper">
+                    <div class="uk-container">
+                        <div class="yb-section-point">
+                            <sup>04</sup>
+                            <span>Portfolio</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-container ">
+                    <div data-uk-grid class="uk-grid-divider">
+                        <div class="uk-width-1-4@s uk-visible@s uk-margin-large-bottom yb-section-padding-top"
+                             id="portfolio-nav-wrapper">
+                            <div data-uk-sticky="bottom: #portfolio-nav-wrapper; offset: 100; media: 650">
+                                <ul class="yb-nav-left uk-tab-left uk-tab"
+                                    data-uk-scrollspy-nav="closest: li; scroll: false; offset: 120">
+                                    <li class="uk-active">
+                                        <a href="#myworks" class="yb-inner-link" data-offset="120">
+                                            <span data-uk-icon="minus"></span>
+                                            My Works
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uk-width-expand@s yb-section-padding-top">
+                            <div>
+                                <h2 class="yb-section-title uk-heading-line " id="myworks">
+<span>My Works
+    {% if user == obj_user %}
+        <a href="{% url 'project-create' %}" class="uk-icon-button uk-margin-small-right"
+           uk-icon="plus-circle"></a>
+    {% endif %}
+</span>
+                                </h2>
+                                <div data-uk-filter="target: .js-filter" class="yb-margin-top-1 yb-margin-bottom-1">
+                                    <ul class="yb-nav-filter uk-subnav uk-subnav-pill">
+                                        <li><a data-uk-filter-control>All</a></li>
+                                        {% for obj in obj_user.project.all %}
+                                            {% ifchanged %}
+                                                <li>
+                                                    <a data-uk-filter-control=".{{ obj.category|lower }}">{{ obj.category|capfirst }}</a>
+                                                </li>
+                                            {% endifchanged %}
+                                        {% endfor %}
+                                    </ul>
+                                    <ul class="js-filter uk-child-width-1-2  uk-grid-small  " data-uk-grid
+                                        data-uk-lightbox="animation: fade;  toggle: .yb-lightbox">
+                                        {% for obj in obj_user.project.all %}
+                                            <li class="{{ obj.category|lower }}">
+                                                <div class="yb-work-item uk-transition-toggle">
+                                                    <div class="yb-work-item-img-wrap">
+                                                        <div class="yb-work-item-img">
+                                                            <img src="{% static "assets/blog/src/img/empty.png" %}"
+                                                                 width="383" height="574" data-src="{{ obj.mob.url }}"
+                                                                 class="uk-transition-scale-up uk-transition-opaque"
+                                                                 alt="" data-uk-img/>
+                                                        </div>
+                                                        <div class="yb-work-item-overlay uk-transition-fade uk-position-cover uk-position-small uk-overlay  uk-flex uk-flex-center uk-flex-middle">
+                                                            <div>
+                                                                {% if user == obj_user %}
+                                                                    <a href="{% url 'project-update' pk=obj.id %}"
+                                                                       class="uk-icon-button uk-margin-small-right"
+                                                                       uk-icon="pencil"></a>
+                                                                    <a href="{% url 'project-delete' pk=obj.id %}"
+                                                                       class="uk-icon-button uk-margin-small-right"
+                                                                       uk-icon="trash"></a>
+                                                                {% endif %}
+                                                                <a href="{{ obj.web.url }}"
+                                                                   class="yb-lightbox uk-transition-slide-left"
+                                                                   data-caption="{{ obj.title|capfirst }}">
+                                                                    <span data-uk-icon="icon:plus; ratio:1.2"></span>
+                                                                </a>
+                                                                <a href="{{ obj.link }}"
+                                                                   class="uk-transition-slide-right show-portfolio">
+                                                                    <span data-uk-icon="icon:link; ratio:1.2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="{{ obj.link }}" class="show-portfolio">
+                                                        <div class="yb-work-item-title">
+                                                            <h5>{{ obj.title|capfirst }}</h5>
+                                                            <span>{{ obj.category|capfirst }}</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div id="show-portofolio-details" class="uk-modal-full" data-uk-modal>
+                                        <div class="uk-modal-dialog ">
+                                            <button class="uk-modal-close-full uk-close-large" type="button"
+                                                    data-uk-close></button>
+                                            <div id="portofolio-details" data-uk-height-viewport
+                                                 class="uk-animation-toggle uk-overflow-hidden">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </section>
+        {% endif %}
+        <!-- end portfolio section -->
+        <!-- blog section-->
+        <section class="yb-section yb-section-padding" id="articles">
+            <div class="yb-section-point-wrapper">
+                <div class="uk-container">
+                    <div class="yb-section-point">
+                        <sup>05</sup>
+                        <span>Blog</span>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-container">
+                <h2 class="yb-section-title uk-heading-line"><span>Latest News</span></h2>
+                <div data-uk-grid class="uk-grid-medium yb-margin-top-1 yb-margin-bottom-2">
+                    {% if articles %}
+                        {% for obj in articles %}
+                            {% if forloop.first %}
+                                <div class="uk-width-2-3@m ">
+                            {% else %}
+                                <div class="uk-width-1-3@m uk-width-1-2@s">
+                            {% endif %}
+                        <a href="{% url 'post_detail' obj.slug %}">
+                            <div class="yb-blog-item uk-background-cover"
+                                 data-src="{% if obj.cover %}{{ obj.cover.url }}{% endif %}" data-uk-img>
+                                <div class="uk-overlay uk-position-cover"></div>
+                                <div class="uk-overlay uk-position-top">
+                                    <span class="uk-badge">{{ obj.category|capfirst }}</span>
+                                </div>
+                                <div class="uk-overlay uk-position-bottom">
+                                    <h5 class="yb-blog-item-title uk-text-truncate">{{ obj.title|capfirst }}</h5>
+                                    <div class="yb-blog-item-meta">
+                                        <div>
+                                            <img src="{% static "assets/blog/src/img/empty.png" %}"
+                                                 data-src="{{ obj.author.profile.get_avatar }}" width="45" height="45"
+                                                 data-uk-img alt="" class="uk-border-pill"/>
+                                            <span>{{ obj.author.first_name|capfirst }} {{ obj.author.last_name|capfirst }}</span>
+                                        </div>
+                                        <div>
+                                            <span>{{ obj.created_on }}</span>
+                                        </div>
+                                        <div><span data-uk-icon="file-text"></span> Views: {% get_hit_count for obj %}
+                                        </div>
+                                        <div>
+                                            <span data-uk-icon="comment"></span> {{ obj.comments.count }}
+                                        </div>
+                                        <div>
+                                            <span data-uk-icon="heart"></span> {{ obj.likes.count }}
+                                        </div>
+                                        {% if user.is_authenticated and user == obj.author %}
+                                            <div>
+                                                <span class="uk-icon-button" data-uk-icon="trash"></span>
+                                            </div>
+                                            <div>
+                                                <span class="uk-icon-button" data-uk-icon="pencil"></span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class=' uk-flex-center'>
+                            <h4 class='yb-section-title'>There is no article yet!</h4>
+                        </div>
+                    {% endif %}
+                    </div>
+                    <h5 class="uk-heading-line uk-text-right uk-text-bold">
+                        <a href="{% url 'author-published-post-list' pk=obj_user.id %}" class="uk-link-heading">See More
+                            <span data-uk-icon="icon:arrow-right; ratio: 2"></span>
+                        </a>
+                    </h5>
+                </div>
+        </section>
+        <!-- end blog section -->
+        <!-- contact section -->
+        <section class="yb-section yb-border-top" id="contact">
+            <div class="yb-section-point-wrapper">
+                <div class="uk-container">
+                    <div class="yb-section-point ">
+                        <sup>06</sup>
+                        <span>Contact</span>
+                    </div>
+                </div>
+            </div>
+            <div class="contact">
+                <div class="uk-container">
+                    <div data-uk-grid class=" uk-grid-divider">
+                        <div class="yb-section-padding yb-contact-left uk-width-3-4@m">
+                            <div>
+                                <h2 class="yb-section-title uk-heading-line">
+                                    <span>Get in touch</span>
+                                </h2>
+                                <h3 class="yb-section-title uk-heading-line" id="contact_form_message"></h3>
+                                <div id="contact_form_block">
+                                    <p class="uk-text-bold">Feel free to contact me</p>
+                                    <div id="contact-form-alert"></div>
+                                    <div class="widget widget-contact-form widget-contact-form-style2 ">
+                                        <h6 class="widget-title heading-alt-style8 short-underline">Inquiry</h6>
+                                        <form class="uk-form-stacked" id="contact_form" action="{% url 'contact' %}"
+                                              method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ object.user.id }}" name="user">
+                                            <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                                                <div>
+                                                    <div class="uk-margin">
+                                                        <label for="f_email"
+                                                               class="uk-form-label">{{ contact_form.email.label }}*</label>
+                                                        <div class="uk-form-controls uk-inline uk-width-1-1">
+                                                            <span class="uk-form-icon" data-uk-icon="icon: user"></span>
+                                                            {{ contact_form.email }}
+                                                        </div>
+                                                        <small class="uk-text-danger err-msg"
+                                                               id="f_email_error">{{ contact_form.email.errors }}</small>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="uk-margin">
+                                                        <label for="f_phone"
+                                                               class="uk-form-label">{{ contact_form.phone.label }}*</label>
+                                                        <div class="uk-form-controls uk-inline uk-width-1-1">
+<span class="uk-form-icon"
+      data-uk-icon="icon: phone"></span>
+                                                            {{ contact_form.phone }}
+                                                        </div>
+                                                        <small class="uk-text-danger err-msg" id="f_phone_error">
+                                                            {{ contact_form.phone.errors }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="uk-margin">
+                                                <label class="uk-form-label">{{ contact_form.subject.label }}*</label>
+                                                <div class="uk-form-controls uk-grid-small uk-child-width-auto uk-grid">
+                                                    {% for choice in contact_form.subject %}
+                                                        <label>
+                                                            {{ choice.tag }}
+                                                            {{ choice.choice_label }}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                                <small class="uk-text-danger err-msg" id="f_radio_error">
+                                                    {{ contact_form.subject.errors }}
+                                                </small>
+                                            </div>
+                                            <div class="uk-margin ">
+                                                <label for="f_message"
+                                                       class="uk-form-label">{{ contact_form.message.label }}*</label>
+                                                <div class="uk-form-controls">
+                                                    {{ contact_form.message }}
+                                                </div>
+                                                <small class="uk-text-danger err-msg" id="f_message_error">
+                                                    {{ contact_form.message.errors }}
+                                                </small>
+                                            </div>
+                                            <div class="uk-margin-top">
+                                                <button class="uk-button uk-button-primary uk-button-large  yb-btn"
+                                                        type="submit" id="sendMessageButton" data-textreset="Send Now">
+                                                    <span class="uk-margin-small-right btn-text-wrap">Send Now</span>
+                                                    <span data-uk-icon="arrow-right" class="uk-icon"> </span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <div class="contact-form-message" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" uk-width-1-4@m yb-section-padding yb-contact-right">
+                            {% if object.avatar.url %}
+                                <p class="uk-margin-medium-bottom uk-visible@m">
+                                    <img src="{% static "assets/blog/src/img/empty.png" %}"
+                                         data-src="{{ object.avatar.url }}" width="500" height="500" data-uk-img alt=""
+                                         class="uk-border-circle"/>
+                                </p>
+                            {% endif %}
+                            <ul class="uk-list uk-list-divider uk-text-small yb-contact-mini">
+                                {% if object.user.email %}
+                                    <li class="uk-flex uk-flex-middle">
+                                        <span data-uk-icon="mail" class="uk-flex-none uk-text-primary "></span>
+                                        <span><a
+                                                href="mailto:contact@arshanaslam.me"> {{ object.user.email }}</a></span>
+                                    </li>
+                                {% endif %}
+                                {% if object.phone %}
+                                    <li class="uk-flex uk-flex-middle">
+                                        <span data-uk-icon="phone" class="uk-flex-none uk-text-primary"></span>
+                                        <span>Phone: <a href="tel:+923-217-540-974">{{ object.phone }}</a></span>
+                                    </li>
+                                {% endif %}
+                                {% if object.city or object.country %}
+                                    <li class="uk-flex uk-flex-middle">
+                                        <span data-uk-icon="location" class="uk-flex-none uk-text-primary "></span>
+                                        <span>{{ object.city|capfirst }}, {{ object.country|capfirst }}</span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end contact section -->
+    </main>
+    <!-- end main section -->
+{% endblock main %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).on('submit', "#contact_form", function (e) {
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'contact' %}',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    if (data.status == "True") {
+                        $("#contact_form")[0].reset();
+                        $("#contact_form_block").empty();
+                        $('#contact_form_message').empty().append(data.message)
+                    } else {
+                        try {
+                            $('#f_email_error').empty().append(data.error.email[0])
+                        } catch (err) {
+                            $('#f_email_error').empty()
+                        }
+
+                        try {
+                            $('#f_phone_error').empty().append(data.error.phone[0])
+                        } catch (err) {
+                            $('#f_phone_error').empty()
+                        }
+
+                        try {
+                            $('#f_radio_error').empty().append(data.error.subject[0])
+                        } catch (err) {
+                            $('#f_radio_error').error()
+                        }
+                        try {
+                            $('#f_message_error').empty().append(data.error.message[0])
+                        } catch (err) {
+                            $('#f_message_error').error()
+                        }
+                    }
+                }
+            });
+        })
+    </script>
+{% endblock javascript %}
+

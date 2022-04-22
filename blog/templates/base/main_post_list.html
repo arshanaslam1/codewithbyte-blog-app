@@ -1,0 +1,130 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load hitcount_tags %}
+
+{% block page_body %}
+      <div class="uk-container">
+        <div data-uk-grid class="uk-grid-divider">
+
+          <div class="uk-width-3-4@m yb-section-padding">
+          {% block blog_detail %}
+                         {% if messages %}
+     {% for message in messages %}
+         <div class="uk-text-bold">
+         <p>    {{ message|safe }}</p>
+         </div>
+     {% endfor %}
+ {% endif %}
+              {% block page_title %}
+
+              {% endblock page_title %}
+
+
+              {% block post_list %}
+            <div data-uk-grid class="uk-grid-medium uk-child-width-1-2@s uk-margin-medium-top">
+
+              {% if post_list %}
+              {% for post in post_list %}
+              {% if forloop.first %}
+              <div class="uk-width-1-1">
+              {% else %}
+              <div>
+              {% endif %}
+                <a href="{% url 'post_detail' post.slug  %}">
+                  <div class="yb-blog-item uk-background-cover" data-src="{% if post.cover %}{{ post.cover.url }}{% endif %}" data-uk-img>
+                    <div class="uk-overlay uk-position-cover"> </div>
+                    <div class="uk-overlay uk-position-top">
+                      <span class="uk-badge">{{ post.category|capfirst }}</span>
+                    </div>
+                    <div class="uk-overlay uk-position-bottom">
+                      <h5 class="yb-blog-item-title uk-text-truncate">{{ post.title|capfirst }}</h5>
+                      <div class="yb-blog-item-meta">
+                        <div>
+                            <img src="{% static "assets/blog/src/img/empty.png" %}" data-src="{{ post.author.profile.get_avatar }}" width="45" height="45" data-uk-img alt="" class="uk-border-pill" />
+                            <span>{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</span>
+                        </div>
+                        <div>
+                          <span>{{ post.created_on}}</span>
+                        </div>
+                        <div><span data-uk-icon="file-text"></span> Views: {% get_hit_count for post %}</div>
+                        <div>
+                             <span data-uk-icon="comment"></span> {{ post.comments.count }}
+                        </div>
+                        <div>
+                          <span data-uk-icon="heart"></span> {{ post.likes.count }}
+                        </div>
+                        {% if user.is_authenticated and user == post.author %}
+
+                        <div>
+                          <span class="uk-icon-button" data-uk-icon="trash"></span>
+                        </div>
+                            <div>
+                          <span class="uk-icon-button" data-uk-icon="pencil"></span>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+              {% else %}
+                  <p>There is not Post yet!</p>
+              {% endif %}
+            </div>
+            {% endblock post_list %}
+            {% block paginated %}
+            {% if is_paginated %}
+                <div class="uk-margin-bottom uk-margin-large-top">
+                  <ul class="yb-paggination uk-pagination uk-flex-center">
+                    {% if page_obj.has_previous %}
+                        <li>
+                          <a href="?page=1"><span data-uk-icon='chevron-double-left'></span></a>
+                        </li>
+                        <li>
+                          <a href="?page={{ page_obj.previous_page_number }}"><span data-uk-pagination-previous ></span></a>
+                        </li>
+                    {% else %}
+                        <li class="uk-disabled">
+                          <a href="#"><span data-uk-icon='chevron-double-left' ></span></a>
+                        </li>
+                        <li class="uk-disabled">
+                          <a href="#"><span data-uk-pagination-previous></span></a>
+                        </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="uk-active"><a href="?page{{ num }}">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'-3' %}
+                            <li><a href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li>
+                          <a href="?page={{ page_obj.next_page_number }}"><span data-uk-pagination-next></span></a>
+                        </li>
+                        <li>
+                          <a href="?page={{ page_obj.paginator.num_pages }}"><span data-uk-icon='chevron-double-right'></span></a>
+                        </li>
+                    {% else %}
+                        <li class="uk-disabled">
+                          <a href="#"><span data-uk-pagination-next></span></a>
+                        </li>
+                        <li class="uk-disabled">
+                          <a href="#"><span data-uk-icon='chevron-double-right' ></span></a>
+                        </li>
+                    {% endif %}
+                  </ul>
+                </div>
+            {% endif %}
+            {% endblock paginated %}
+          {% endblock %}
+          </div>
+
+          {% block blog_nav %}
+            {{ block.super }}
+          {% endblock %}
+        </div>
+      </div>
+{% endblock %}

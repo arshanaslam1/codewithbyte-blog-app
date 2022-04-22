@@ -1,0 +1,357 @@
+{% load static %}
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <link rel="canonical" href="{{ request.build_absolute_uri }}">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      {% block meta %}
+      <title>
+        CodeWithByte Blog Python Learning
+      </title>
+         <meta name="description" content="CodeWithByte Blog Python Learning">
+          <meta name="author" content="CodeWithByte">
+          <meta property="og:locale" content="en_US" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="CodeWithByte Blog Python Learning"/>
+          <meta property="og:description" content="Django Blog Python Learning"/>
+          <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+          <meta property="og:image" content="{% static "assets/blog/src/img/favicon.png" %}"/>
+          <meta property="og:site_name" content="arshanaslam.me" />
+          <meta name="twitter:card" content="summary"/>
+          <meta name="twitter:description" content="Django Blog Python Learning"/>
+          <meta name="twitter:image:src" content="{% static "assets/blog/src/img/favicon.png" %}"/>
+          <meta name="twitter:title" content="Arshan Blog Python Learning"/>
+          <meta name="twitter:domain" content="{{ request.build_absolute_uri }}"/>
+          <meta name="twitter:creator" content="{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}"/>
+      {% endblock meta %}
+      <link rel="shortcut icon" href="{% static "assets/blog/src/img/favicon.png" %}" />
+        <!-- Chrome, Firefox OS and Opera -->
+        <meta name="theme-color" content="#05182c">
+        <!-- Windows Phone -->
+        <meta name="msapplication-navbutton-color" content="#05182c">
+        <!-- iOS Safari -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="#05182c">
+      <!-- css -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap">
+        <link rel="stylesheet" href="{% static "assets/blog/src/app/css/uikit-custom.min.css" %}" />
+        <link rel="stylesheet" href="{% static "assets/blog/src/app/css/app.css" %}" />
+    </head>
+
+      <body id="body-app" class="yb-dark-skin uk-light">
+          <!-- page loader -->
+          <div id="pageloader" class="yb-pageloader-wrapper">
+            <div class="uk-position-center  uk-text-center">
+              <div data-uk-spinner></div>
+            </div>
+          </div><!-- end page loader -->
+          <!-- main header -->
+          <header class="yb-main-header" id="main-header">
+            {% block resume %}
+            {% endblock resume %}
+            <!-- main menu -->
+            <nav class="yb-main-menu " id="main-menu">
+              <div class="uk-container" data-uk-navbar>
+                <div class="uk-navbar-left">
+                  <a class=" uk-navbar-item uk-logo" href="/"><span class="yb-section-title"><img style="width:50px;height:50px;" alt="logo" src="{% static "assets/blog/src/img/favicon.png" %}">  CodeWithByte</span></a>
+                </div>
+                <div class="uk-navbar-right uk-hidden@m">
+                  <a class="uk-navbar-toggle" href="#" id="btn-menu-toggle">
+                    <span data-uk-navbar-toggle-icon class="yb-icon-menu"></span>
+                    <span data-uk-icon="close" class="yb-icon-close"></span>
+                  </a>
+                </div>
+                <!-- <div class="yb-menu-toggle-wrapper" id="menucollapse">
+                  <div class="uk-navbar-center">
+                    <ul class="uk-navbar-nav" data-uk-scrollspy-nav="closest: li; scroll: false; offset: 79 ">
+                      <li>
+                        <a class="yb-inner-link" href=""> Home </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="#about"> About</a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="#resume"> Resume </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="#portfolio"> Portfolio </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href=""> Blog </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="#contact"> Contact </a>
+                      </li>
+                    </ul>
+                  </div> -->
+{% block nav_center %}
+                <div class="yb-menu-toggle-wrapper" id="menucollapse">
+                  <div class="uk-navbar-center">
+                    <ul class="uk-navbar-nav" data-uk-scrollspy-nav="closest: li; scroll: false; offset: 79 ">
+                      <li>
+                        <a class="yb-inner-link" href="{% url 'blog' %}"> Home </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="{% url 'category_list' %}"> Categories</a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="{% url 'tags_list' %}"> Tags </a>
+                      </li>
+                      <li>
+                        <a class="yb-inner-link" href="{% url 'author_list' %}"> Authors </a>
+                      </li>
+                    </ul>
+                  </div>
+{% endblock nav_center %}
+{% block nav_right %}
+{% if user.is_authenticated %}
+        <div class="uk-navbar-right uk-margin">
+          <ul class="uk-navbar-nav">
+            <li>
+              <p>
+                <img src="{% static "assets/blog/src/img/empty.png" %}" data-src="{{ user.profile.get_avatar }}" width="50" height="50" data-uk-img alt="" class="uk-border-pill" />
+                <span class="uk-text-middle">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
+              </p>
+              <div class="uk-navbar-dropdown uk-border-rounded yb-dark-skin uk-light">
+                <ul class="uk-nav uk-navbar-dropdown-nav">
+                  <li class="uk-text-bold">Profile</li>
+                  <li><a href="{% url 'profile' pk=user.id %}">View</a></li>
+                  <li><a href="{% url 'profile-update' pk=user.id %}">Edit</a></li>
+                  <li class="uk-text-bold">Account</li>
+                    <li><a href="{% url 'account_update' pk=user.id %}">Settings</a></li>
+                  <li><a href="{% url 'password_change' %}">Change password</a></li>
+                  <li class="uk-nav-divider"></li>
+                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+{% else %}
+    <div class="uk-navbar-right uk-margin">
+              <p>
+                  <a class="uk-button uk-button-default uk-border-rounded yb-btn3" href="{% url 'login' %}">Login</a>
+                  <a class="uk-button uk-button-primary uk-border-rounded yb-btn3" href="{% url 'register' %}">Signup</a>
+              </p>
+    </div>
+{% endif %}
+{% endblock nav_right %}
+                </div>
+              </div>
+            </nav>
+            <!-- end main menu -->
+          </header>
+          <!-- end main header -->
+
+          {% block main %}
+          <!-- main section -->
+          <main class="yb-main-content">
+            <section>
+            {% block section %}
+
+                {% block page_heading %}
+                    <div class="yb-section-point-wrapper">
+                        <div class="uk-container">
+                          <div class="yb-section-point">
+                            <span>Blog</span>
+                          </div>
+                        </div>
+                    </div>
+                {% endblock page_heading %}
+                {% block page_body %}
+                    {% block blog_detail %}
+                    {% endblock %}
+
+                  {% block blog_nav %}
+                  <div class="uk-width-1-4@m yb-section-padding">
+                    {% block blog_sreach %}
+                    <div class="yb-sidebar-item">
+                      <form method="get" action="{% url 'search_post_list' %}" class="uk-search uk-search-default uk-width-1-1">
+                          {% csrf_token %}
+                        <span data-uk-search-icon></span>
+                        <input class="uk-search-input " name="query" type="search" placeholder="Search...">
+                      </form>
+                    </div>
+                    {% endblock blog_sreach%}
+                    {% if user.is_authenticated %}
+                        <div class="yb-sidebar-item">
+                      <div class="uk-text-small uk-text-center uk-margin">
+                          <a href='{% url 'post-create' %}' class="uk-button uk-button-primary yb-btn">Create</a>
+                      </div>
+                      <div class="uk-text-small uk-text-center uk-margin">
+                        <a href='{% url 'author-all-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Posts</a>
+                    </div>
+                      <div class="uk-text-small uk-text-center uk-margin">
+                        <a href='{% url 'author-published-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Published</a>
+                    </div>
+                    <div class="uk-text-small uk-text-center uk-margin">
+                        <a href='{% url 'author-pending-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Pending</a>
+                    </div>
+                    <div class="uk-text-small uk-text-center uk-margin">
+                        <a href='{% url 'author-draft-post-list' pk=user.id %}' class="uk-button uk-button-default yb-btn">Draft</a>
+                    </div>
+                    </div>
+                         <div class="uk-text-small uk-text-center uk-margin">
+                            <a href='{% url 'blog' %}' class="uk-button uk-button-default yb-btn">All Posts</a>
+                    </div>
+                    {% else %}
+                        {% block nav_about %}
+
+                        {% endblock nav_about %}
+                    {% endif %}
+
+                    {% block trending_post %}
+
+                    {% endblock trending_post %}
+
+                    {% block related_post %}
+
+                    {% endblock related_post %}
+                    {% block post_category %}
+                    <div class="yb-sidebar-item">
+                      <h6 class="uk-text-bold uk-heading-line "><span>Categories</span></h6>
+
+
+                      <div data-uk-form-custom="target: > * > span:first-child" class="uk-width-1-1 ">
+                        <select onchange="window.location.href=this.value"  required>
+                            <option value="">Select Category</option>
+
+                            {% for category in categories %}
+                            <option value="{% url 'category_post_list' category.slug %}">{{ category.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="uk-button uk-button-default  uk-width-1-1" type="button" tabindex="-1" name="update">
+                          <span></span>
+                          <span data-uk-icon="icon: chevron-down"></span>
+                        </button>
+                      </div>
+                    </div>
+                    {% endblock post_category %}
+
+                    {% block post_tag %}
+                    {% if tags %}
+                    <div class="yb-sidebar-item">
+                      <h6 class="uk-text-bold uk-heading-line"><span>Tags</span></h6>
+                      <div class="yb-sidebar-tags">
+                          {% for tag in tags %}
+                        <a href="{% url 'tag_post_list' tag.slug  %}" class="uk-link-reset">{{ tag }}</a>
+                          {% endfor %}
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endblock post_tag %}
+
+                    {% if user.is_authenticated %}
+
+
+                    {% else %}
+                        {% block subcribe %}
+                    <div class="yb-sidebar-item">
+                    <h6 class="uk-text-bold uk-heading-line "><span>Subscribe</span></h6>
+                    <div id="subscribe_form_block">
+                        <form type="hidden" action="{% url 'subscribe' %}" method='post' id="subscribe_form" class="uk-inline uk-width-1-1">
+                                {% csrf_token %}
+                               <button class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: link"></button>
+                              {{ subscribe_form.email }}
+                        </form >
+                     </div>
+                     <p id="subscribe_form_message"></p>
+                    </div>
+                    {% endblock subcribe %}
+                    {% endif %}
+
+
+
+
+                  </div>
+                  {% endblock blog_nav %}
+
+                {% endblock %}
+
+            {% endblock section %}
+            </section>
+          </main>
+          {% endblock main %}
+          <!-- end main section -->
+          <!-- main footer -->
+          <footer class="yb-main-footer-wrapper">
+            <div class="waveHorizontals">
+              <div id="waveHorizontal1" class="waveHorizontal" data-uk-img data-src="{% static "assets/blog/src/img/bg/wave1.svg" %}"></div>
+              <div id="waveHorizontal2" class="waveHorizontal" data-uk-img data-src="{% static "assets/blog/src/img/bg/wave2.svg" %}"></div>
+              <div id="waveHorizontal3" class="waveHorizontal" data-uk-img data-src="{% static "assets/blog/src/img/bg/wave3.svg" %}"></div>
+
+            </div>
+            <a href="#body-app" class="uk-visible@s yb-totop yb-inner-link" data-uk-totop></a>
+            <div class="yb-main-footer">
+              <div class="uk-container">
+                <div data-uk-grid class="uk-child-width-1-2@s">
+                  <div class="uk-margin-remove uk-text-left@s">
+                    CodeWithByte
+                    •
+                    © 2022
+
+                  <br>
+
+                    Freda Themes by yobithemes - modified
+                  </div>
+                  <div class="uk-margin-remove uk-text-right@s">
+                    <div class="yb-footer-social">
+                        <a href="https://www.facebook.com/arshanaslam1">
+                          <span class="uk-icon " data-uk-icon="icon: facebook"></span>
+                        </a>
+                        <a href="https://www.instagram.com/arshanaslam1/">
+                          <span class="uk-icon" data-uk-icon="icon: instagram"></span>
+                        </a>
+                        <a href="https://twitter.com/arshanaslam1">
+                          <span class="uk-icon" data-uk-icon="icon: twitter"></span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/arshanaslam1/">
+                          <span class="uk-icon" data-uk-icon="icon: linkedin"></span>
+                        </a>
+                        <a href="https://github.com/arshanaslam1">
+                          <span class="uk-icon" data-uk-icon="icon: github"></span>
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCBKGPYYcDYqKsUGU_zmB1nA">
+                          <span class="uk-icon" data-uk-icon="icon: youtube"></span>
+                        </a>
+                        <a href="https://api.whatsapp.com/message/32VO6VIKN5PNB1">
+                          <span class="uk-icon" data-uk-icon="icon: whatsapp"></span>
+                        </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer><!-- end main footer -->
+            <!-- js -->
+          <script src="{% static "assets/blog/src/app/js/plugins.min.js" %}"></script>
+          <script src="{% static "assets/blog/src/app/js/app.js" %}"></script>
+
+            <script type="text/javascript">
+                $(document).on('submit', "#subscribe_form", function (event){
+                    event.preventDefault();
+                    var dataString = $(this).serialize();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url 'subscribe' %}',
+                        dataType: 'json',
+                        data: dataString,
+                        success:function (data) {
+                            if (data.status=="True") {
+                                $("#subscribe_form")[0].reset()
+                                $("#subscribe_form_block").empty()
+                                $('#subscribe_form_message').empty().append(data.message)
+                            }
+                            else{
+                                $('#subscribe_form_message').empty().append(data.error.email[0])
+                            }
+                        }
+                    });
+                })
+            </script>
+            {% block javascript %}
+            {% endblock javascript %}
+
+      </body>
+</html>

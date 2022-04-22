@@ -1,0 +1,105 @@
+
+
+{% extends "base/profile-main.html" %}
+{% block page_heading %}
+<div class="yb-section-point-wrapper">
+   <div class="uk-container">
+      <div class="yb-section-point">
+         <span>{{ view.page_title }}</span>
+      </div>
+   </div>
+</div>
+{% endblock page_heading %}
+{% block blog_detail %}
+<div class="contact">
+   <div class="uk-container">
+      <div data-uk-grid class=" uk-grid-divider">
+         <div class=" yb-contact-left uk-width-3-3@m">
+            <div>
+               <div id="contact_form_block">
+                  <p class="uk-text-bold"></p>
+                  <div id="contact-form-alert"></div>
+                  <div class="widget widget-contact-form widget-contact-form-style2 ">
+                     <form  class="uk-form-stacked" id="" action = "" method="post" novalidate enctype="multipart/form-data">
+                        <small class="uk-text-danger err-msg" id="f_email_error">{{ form.non_felids_errors}}</small>
+                        {% csrf_token %}
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.category.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.category }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.category.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.name.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.name }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.name.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.organization.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.organization }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.organization.errors}}</small>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="uk-grid uk-grid-small uk-child-width-1-2@s">
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.issueDate.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.issueDate }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">{{ form.issueDate.errors}}</small>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="uk-margin">
+                                 <label for="" class="uk-form-label">{{ form.expirationDate.label }}*</label>
+                                 <div class="uk-form-controls uk-inline uk-width-1-1">
+                                    {{ form.expirationDate }}
+                                 </div>
+                                 <small class="uk-text-danger err-msg" id="">
+                                 {{ form.expirationDate.errors }}
+                                 </small>
+                              </div>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="uk-margin">
+                              <label for="" class="uk-form-label">{{ form.description.label }}*</label>
+                              <div class="uk-form-controls uk-inline uk-width-1-1">
+                                 {{ form.description }}
+                              </div>
+                              <small class="uk-text-danger err-msg" id="">{{ form.description.errors}}</small>
+                           </div>
+                        </div>
+                        <div class="uk-margin-top">
+                           <button class="uk-button uk-button-primary uk-button-large  yb-btn" type="submit" id="" >
+                           <span class="uk-margin-small-right btn-text-wrap">Save</span>
+                           </button>
+                        </div>
+                     </form>
+                     <div class="contact-form-message" style="display: none;"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock blog_detail %}
+
