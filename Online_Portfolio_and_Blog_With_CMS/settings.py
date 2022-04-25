@@ -183,8 +183,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AZURE_BLOB = True
 USE_S3 = False
 if AZURE_BLOB:
-    AZURE_ACCOUNT_NAME = os.environ.get('AZURE_ACCOUNT_NAME')
-    AZURE_CUSTOM_DOMAIN = '%s.blob.core.windows.net' % AZURE_ACCOUNT_NAME
+    # AZURE_ACCOUNT_NAME = os.environ.get('AZURE_ACCOUNT_NAME')
+    # AZURE_CUSTOM_DOMAIN = '%s.blob.core.windows.net' % AZURE_ACCOUNT_NAME
+    AZURE_CUSTOM_DOMAIN = os.environ.get('AZURE_CUSTOM_DOMAIN')
     AZURE_CONNECTION_STRING = os.environ.get('AZURE_CONNECTION_STRING')
     AZURE_SSL = True
 
