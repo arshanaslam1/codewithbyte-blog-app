@@ -96,7 +96,10 @@ AUTH_USER_MODEL = 'accounts.User'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
+# at single time one is true and other all false or both are false.
 USE_AZURE_RDS = True
+USE_AWS_RDS = False
 if USE_AZURE_RDS:
     DATABASES = {
         'default': {
@@ -107,16 +110,7 @@ if USE_AZURE_RDS:
             'HOST': os.environ.get('DATABASE_HOST'),
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-"""
-USE_AWS_RDS = True
-if USE_AWS_RDS:
+elif USE_AWS_RDS:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -126,7 +120,14 @@ if USE_AWS_RDS:
             'HOST': os.environ.get('DATABASE_HOST'),
             'PORT': os.environ.get('DATABASE_PORT'),
         }
-    }"""
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -178,8 +179,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-# AZURE_BLOB
+# at single time one is true and other all false or both are false.
 AZURE_BLOB = True
+USE_S3 = False
 if AZURE_BLOB:
     AZURE_ACCOUNT_NAME = os.environ.get('AZURE_ACCOUNT_NAME')
     AZURE_CUSTOM_DOMAIN = '%s.blob.core.windows.net' % AZURE_ACCOUNT_NAME
@@ -193,18 +195,7 @@ if AZURE_BLOB:
     MEDIAFILES_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'Online_Portfolio_and_Blog_With_CMS.azure.utils.AzureMediaStorage'
     MEDIA_URL = 'htts://{}/{}/'.format(AZURE_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-else:
-    STATIC_URL = 'static/'
-    # Location of static files
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    # Base url to serve media files
-    MEDIA_URL = '/media/'
-    # Path where media is stored
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-'''
-USE_S3 = False
-if USE_S3:
+elif USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
@@ -219,8 +210,15 @@ if USE_S3:
 
     MEDIAFILES_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'Online_Portfolio_and_Blog_With_CMS.aws.utils.MediaStorage'
-    MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)'''
-
+    MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+else:
+    STATIC_URL = 'static/'
+    # Location of static files
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    # Base url to serve media files
+    MEDIA_URL = '/media/'
+    # Path where media is stored
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # url define
 LOGIN_REDIRECT_URL = 'blog'
