@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-oyomjq8d!##wlsdqs2n320o#$-k4l&x@sarhnj#olkr&9=0=ko'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'codewithbyte.tech', 'www.codewithbyte.tech']
 CORS_ORIGIN_ALLOW_ALL = True
@@ -96,6 +96,25 @@ AUTH_USER_MODEL = 'accounts.User'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+USE_AZURE_RDS = True
+if USE_AZURE_RDS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME':  os.environ.get('DATABASE_NAME'),
+            'USER': os.environ.get('DATABASE_USER'),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'HOST': os.environ.get('DATABASE_HOST'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+"""
 USE_AWS_RDS = True
 if USE_AWS_RDS:
     DATABASES = {
@@ -107,14 +126,8 @@ if USE_AWS_RDS:
             'HOST': os.environ.get('DATABASE_HOST'),
             'PORT': os.environ.get('DATABASE_PORT'),
         }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+    }"""
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -165,8 +178,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-# S3
-USE_S3 = True
+# AZURE_BLOB
+AZURE_BLOB = True
+if AZURE_BLOB:
+    AZURE_ACCOUNT_NAME = os.environ.get('AZURE_ACCOUNT_NAME')
+    AZURE_CUSTOM_DOMAIN = '%s.blob.core.windows.net' % AZURE_ACCOUNT_NAME
+    AZURE_CONNECTION_STRING = os.environ.get('AZURE_CONNECTION_STRING')
+    AZURE_SSL = True
+
+    STATICFILES_LOCATION = 'static'
+    STATICFILES_STORAGE = 'Online_Portfolio_and_Blog_With_CMS.azure.utils.AzureStaticStorage'
+    STATIC_URL = 'https://{}/{}/'.format(AZURE_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+    MEDIAFILES_LOCATION = 'media'
+    DEFAULT_FILE_STORAGE = 'Online_Portfolio_and_Blog_With_CMS.azure.utils.AzureMediaStorage'
+    MEDIA_URL = 'htts://{}/{}/'.format(AZURE_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+else:
+    STATIC_URL = 'static/'
+    # Location of static files
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    # Base url to serve media files
+    MEDIA_URL = '/media/'
+    # Path where media is stored
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+'''
+USE_S3 = False
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -182,15 +219,7 @@ if USE_S3:
 
     MEDIAFILES_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'Online_Portfolio_and_Blog_With_CMS.aws.utils.MediaStorage'
-    MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-else:
-    STATIC_URL = 'static/'
-    # Location of static files
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    # Base url to serve media files
-    MEDIA_URL = '/media/'
-    # Path where media is stored
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)'''
 
 
 # url define
